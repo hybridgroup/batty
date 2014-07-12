@@ -1,0 +1,29 @@
+{
+  "MCP": {
+    "robots": [
+      {
+        "name": "TestBot",
+
+        "connections": [
+          {
+            "name": "loopback",
+            "adaptor": "Loopback"
+          }
+        ],
+
+        "devices": [
+          {
+            "name": "ping",
+            "driver": "Ping",
+            "connection": "Loopback",
+            "commands": ["ping"]
+          }
+        ],
+
+        "commands": [ "hello" ]
+      }
+    ],
+
+    "commands": [ "echo" ]
+  }
+}
