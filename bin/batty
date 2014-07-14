@@ -2,4 +2,7 @@
 
 "use strict";
 
-require('..')();
+var argv = process.argv.slice(2),
+    base = argv[0];
+
+require('..')(base);
