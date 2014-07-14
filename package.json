@@ -31,6 +31,7 @@
   },
 
   "dependencies": {
-    "restler": "3.2.2"
+    "restler": "3.2.2",
+    "lodash": "2.4.1"
   }
 }
