@@ -8,7 +8,7 @@ describe("Routes", function() {
       var route = Routes[key];
 
       it("should have a 'method' key", function() {
-        var methods = ["GET", "POST"];
+        var methods = ["get", "postJson"];
 
         expect(route.method).to.be.a('string');
         expect(methods).to.include(route.method);
