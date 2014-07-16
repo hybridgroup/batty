@@ -1,0 +1,5 @@
+{
+  "connections": [
+    { "name": "loopback", "adaptor": "Loopback" }
+  ]
+}

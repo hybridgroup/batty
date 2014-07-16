@@ -1,0 +1,21 @@
+{
+  "robots": [
+    {
+      "name": "TestBot",
+      "connections": [
+        { "name": "loopback", "adaptor": "Loopback" }
+      ],
+
+      "devices": [
+        {
+          "name": "ping",
+          "driver": "Ping",
+          "connection": "loopback",
+          "commands": [ "ping" ]
+        }
+      ],
+
+      "commands": [ "hello" ]
+    }
+  ]
+}

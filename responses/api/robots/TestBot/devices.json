@@ -1,0 +1,10 @@
+{
+  "devices": [
+    {
+      "name": "ping",
+      "driver": "Ping",
+      "connection": "loopback",
+      "commands": [ "ping" ]
+    }
+  ]
+}
