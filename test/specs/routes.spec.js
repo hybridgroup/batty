@@ -4,11 +4,13 @@ var Routes = source("routes");
 
 describe("Routes", function() {
   describe("each one", function() {
-    Object.keys(Routes).forEach(function(key) {
-      var route = Routes[key];
+    Routes.forEach(function(route) {
+      it("should have a 'path' key", function() {
+        expect(route.path).to.be.a('string');
+      });
 
       it("should have a 'method' key", function() {
-        var methods = ["get", "postJson"];
+        var methods = ["get", "post"];
 
         expect(route.method).to.be.a('string');
         expect(methods).to.include(route.method);
