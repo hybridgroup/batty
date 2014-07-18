@@ -35,6 +35,16 @@ root API path. e.g.
 Batty will then poke and prod at the API, and test to make sure it meets the
 Threepio spec.
 
+## Caveats
+
+If you attempt to run Batty against an API server with a self-signed SSL cert,
+the event tests will fail, as EventSource cannot verify the cert before
+connecting.
+
+## Version History
+
+- 0.1.0 - Initial release.
+
 ## License
 
 Apache 2.0. For more details, see `LICENSE` file.
