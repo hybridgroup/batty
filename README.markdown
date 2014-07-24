@@ -6,7 +6,7 @@ Batty is a tool to test implementations of the Threepio API.
 
 ## Installation
 
-    $ npm install batty
+    $ sudo npm install -g batty
 
 ## Usage
 
@@ -27,10 +27,10 @@ root API path. e.g.
       [...]
       I, [2014-07-10T21:41:36.309Z]  INFO -- : Working.
       I, [2014-07-10T21:41:36.313Z]  INFO -- : Cylon API Server is now online.
-      I, [2014-07-10T21:41:36.313Z]  INFO -- : Listening at https://127.0.0.1:3000
+      I, [2014-07-10T21:41:36.313Z]  INFO -- : Listening at http://127.0.0.1:3000
 
     # in another shell
-    $ batty https://127.0.0.01:3000
+    $ batty http://127.0.0.01:3000
 
 Batty will then poke and prod at the API, and test to make sure it meets the
 Threepio spec.
