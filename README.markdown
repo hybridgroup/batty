@@ -35,6 +35,40 @@ root API path. e.g.
 Batty will then poke and prod at the API, and test to make sure it meets the
 Threepio spec.
 
+Here's an example implementation of the test robot with
+[Cylon](http://cylonjs.com):
+
+```javascript
+var Cylon = require('cylon');
+
+Cylon.api({
+  ssl: false
+});
+
+Cylon.commands.echo = function(arg) {
+  return arg;
+};
+
+Cylon.robot({
+  name: "TestBot",
+
+  connection: { name: 'loopback', adaptor: 'loopback' },
+  device: { name: 'ping', driver: 'ping' },
+
+  commands: [ 'hello' ],
+
+  work: function(my) {
+    every((5).seconds(), my.ping.ping);
+  },
+
+  hello: function(str) {
+    return "Hello, " + str + "!";
+  }
+});
+
+Cylon.start();
+```
+
 ## Caveats
 
 If you attempt to run Batty against an API server with a self-signed SSL cert,
