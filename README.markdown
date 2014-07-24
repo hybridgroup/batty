@@ -6,7 +6,7 @@ Batty is a tool to test implementations of the Threepio API.
 
 ## Installation
 
-    $ sudo npm install -g batty
+    $ [sudo] npm install -g batty
 
 ## Usage
 
