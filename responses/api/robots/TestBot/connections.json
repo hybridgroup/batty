@@ -1,5 +1,12 @@
 {
   "connections": [
-    { "name": "loopback", "adaptor": "Loopback" }
+    {
+      "name": "loopback",
+      "adaptor": "Loopback",
+      "details": {
+        "port": "/dev/null",
+        "test": "abc"
+      }
+    }
   ]
 }

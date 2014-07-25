@@ -7,7 +7,11 @@
         "connections": [
           {
             "name": "loopback",
-            "adaptor": "Loopback"
+            "adaptor": "Loopback",
+            "details": {
+              "port": "/dev/null",
+              "test": "abc"
+            }
           }
         ],
 
@@ -16,7 +20,11 @@
             "name": "ping",
             "driver": "Ping",
             "connection": "loopback",
-            "commands": ["ping"]
+            "commands": ["ping"],
+            "details": {
+              "pin": "13",
+              "test": "abc"
+            }
           }
         ],
 

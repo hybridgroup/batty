@@ -4,7 +4,11 @@
       "name": "ping",
       "driver": "Ping",
       "connection": "loopback",
-      "commands": [ "ping" ]
+      "commands": [ "ping" ],
+      "details": {
+        "port": "/dev/null",
+        "test": "abc"
+      }
     }
   ]
 }

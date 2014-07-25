@@ -1,8 +1,16 @@
 {
   "robot": {
     "name": "TestBot",
+
     "connections": [
-      { "name": "loopback", "adaptor": "Loopback" }
+      {
+        "name": "loopback",
+        "adaptor": "Loopback",
+        "details": {
+          "port": "/dev/null",
+          "test": "abc"
+        }
+      }
     ],
 
     "devices": [
@@ -10,7 +18,11 @@
         "name": "ping",
         "driver": "Ping",
         "connection": "loopback",
-        "commands": [ "ping" ]
+        "commands": ["ping"],
+        "details": {
+          "pin": "13",
+          "test": "abc"
+        }
       }
     ],
 
