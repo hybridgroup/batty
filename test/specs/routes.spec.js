@@ -17,7 +17,9 @@ describe("Routes", function() {
       });
 
       it("should have a 'response' key", function() {
-        expect(route.response).to.be.an('object');
+        expect(route.response).to.be.an('array');
+        expect(route.response[0]).to.be.a('number');
+        expect(route.response[1]).to.be.an('object');
       });
     });
   });

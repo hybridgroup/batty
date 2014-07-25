@@ -18,7 +18,7 @@ describe("Request", function() {
     route = {
       path: "/hello",
       method: "get",
-      response: { hello: "world" }
+      response: [200, { hello: "world" }]
     };
 
     printString = "";
@@ -81,57 +81,67 @@ describe("Request", function() {
   });
 
 
-  describe("#success", function() {
-    var req;
+  describe("#complete", function() {
+    var req, callback;
 
     beforeEach(function() {
-      req = new Request(base, route);
+      callback = spy();
+      req = new Request(base, route, callback);
     });
 
-    context("if the returned data matches expectations", function() {
+    context("if the status code doesn't match expectations", function() {
       beforeEach(function() {
-        res.emit("success", { hello: 'world' });
+        req.expectedCode = 200;
+        res.statusCode = 404;
+        res.emit('complete', "Not Found", res);
       });
 
-      it("logs success", function() {
-        expect(console.log).to.be.calledWith(route.path + " PASSED".green);
+      it("logs that they didn't match", function() {
+        var expected = "expected status code 200, received 404";
+        expect(console.log).to.be.calledWith("/hello" + " FAILED".red);
+        expect(console.log).to.be.calledWith(expected);
       });
+
+      it("triggers the callback", function() {
+        expect(callback).to.be.called;
+      })
     });
 
-    context("if the returned data does not match", function() {
+    context("if the status code matches", function() {
       beforeEach(function() {
-        res.emit("success", { goodbye: 'world' });
+        req.expectedCode = 200;
+        res.statusCode = 200;
       });
 
-      it("logs failure", function() {
-        expect(console.log).to.be.calledWith(route.path + " FAILED".red);
+      context("if the body doesn't match expectations", function() {
+        beforeEach(function() {
+          req.printDiff = spy();
+          res.emit('complete', { random: "thing" }, res);
+        });
+
+        it("prints the diff", function() {
+          expect(req.printDiff).to.be.calledWith(route.response[1], { random: "thing" });
+        });
+
+        it("triggers the callback", function() {
+          expect(callback).to.be.called;
+        });
       });
 
-      it("prints the diff", function() {
-        var diff = '{"'.grey;
-        diff += "goodby".green;
-        diff += "h".red;
-        diff += "e".grey;
-        diff += "llo".red;
-        diff += '":"world"}'.grey;
-        diff += "\n";
+      context("if the body match expectations", function() {
+        beforeEach(function() {
+          stub(req, 'printDiff');
+          res.emit('complete', { hello: "world" }, res);
+        });
 
-        expect(printString).to.eql(diff);
+        it("logs success", function() {
+          expect(console.log).to.be.calledWith("/hello" + " PASSED".green);
+        });
+
+        it("triggers the callback", function() {
+          expect(callback).to.be.called;
+        });
       });
-    });
-  });
-
-  describe("#fail", function() {
-    var req;
-
-    beforeEach(function() {
-      req = new Request(base, route);
-      res.emit("fail", "An error occured");
-    });
-
-    it("logs that an error occured", function() {
-      expect(console.log).to.be.calledWith(route.path + " FAILED".red);
-      expect(console.log).to.be.calledWith("An error occured");
     });
   });
 
