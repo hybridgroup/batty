@@ -6,7 +6,7 @@
       "connection": "loopback",
       "commands": [ "ping" ],
       "details": {
-        "port": "/dev/null",
+        "pin": "13",
         "test": "abc"
       }
     }
