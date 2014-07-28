@@ -52,10 +52,21 @@ Cylon.commands.echo = function(arg) {
 Cylon.robot({
   name: "TestBot",
 
-  connection: { name: 'loopback', adaptor: 'loopback' },
-  device: { name: 'ping', driver: 'ping' },
+  connection: {
+    name: 'loopback',
+    adaptor: 'loopback',
+    port: '/dev/null',
+    test: 'abc'
+  },
 
-  commands: [ 'hello' ],
+  device: {
+    name: 'ping',
+    driver: 'ping',
+    pin: '13',
+    test: 'abc'
+  },
+
+  commands: ['hello'],
 
   work: function(my) {
     every((5).seconds(), my.ping.ping);
