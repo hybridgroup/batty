@@ -46,6 +46,9 @@ Cylon.api({
 });
 
 Cylon.commands.echo = function(arg) {
+  if (arg == null) {
+    throw new Error("No value passed to echo");
+  }
   return arg;
 };
 
