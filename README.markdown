@@ -69,7 +69,11 @@ Cylon.robot({
     test: 'abc'
   },
 
-  commands: ['hello'],
+  commands: function() {
+    return {
+      hello: this.hello
+    }
+  },
 
   work: function(my) {
     every((5).seconds(), my.ping.ping);
