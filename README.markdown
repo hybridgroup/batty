@@ -49,24 +49,19 @@ Cylon.commands.echo = function(arg) {
   if (arg == null) {
     throw new Error("No value passed to echo");
   }
+
   return arg;
 };
 
 Cylon.robot({
   name: "TestBot",
 
-  connection: {
-    name: 'loopback',
-    adaptor: 'loopback',
-    port: '/dev/null',
-    test: 'abc'
+  connections: {
+    loopback: { adaptor: 'loopback', port: '/dev/null', test: 'abc' }
   },
 
   device: {
-    name: 'ping',
-    driver: 'ping',
-    pin: '13',
-    test: 'abc'
+    ping: { driver: 'ping', pin: '13', test: 'abc' }
   },
 
   commands: function() {
@@ -75,11 +70,14 @@ Cylon.robot({
     }
   },
 
+  events: [ "hello" ],
+
   work: function(my) {
     every((5).seconds(), my.ping.ping);
   },
 
   hello: function(str) {
+    this.emit("hello");
     return "Hello, " + str + "!";
   }
 });
