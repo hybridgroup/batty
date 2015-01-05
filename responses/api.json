@@ -21,6 +21,7 @@
             "driver": "Ping",
             "connection": "loopback",
             "commands": ["ping"],
+            "events": ["ping"],
             "details": {
               "pin": "13",
               "test": "abc"
@@ -28,10 +29,12 @@
           }
         ],
 
-        "commands": [ "hello" ]
+        "commands": [ "hello" ],
+        "events": [ "hello" ]
       }
     ],
 
-    "commands": [ "echo" ]
+    "commands": [ "echo" ],
+    "events": [ "robot_added", "robot_removed" ]
   }
 }

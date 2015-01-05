@@ -1,0 +1,3 @@
+{
+  "events": [ "robot_added", "robot_removed" ]
+}

@@ -20,6 +20,7 @@
           "driver": "Ping",
           "connection": "loopback",
           "commands": ["ping"],
+          "events": ["ping"],
           "details": {
             "pin": "13",
             "test": "abc"
@@ -27,7 +28,8 @@
         }
       ],
 
-      "commands": [ "hello" ]
+      "commands": [ "hello" ],
+      "events": [ "hello" ]
     }
   ]
 }
