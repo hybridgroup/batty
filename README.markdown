@@ -60,7 +60,7 @@ Cylon.robot({
     loopback: { adaptor: 'loopback', port: '/dev/null', test: 'abc' }
   },
 
-  device: {
+  devices: {
     ping: { driver: 'ping', pin: '13', test: 'abc' }
   },
 
