@@ -45,7 +45,7 @@ Cylon.api({
   ssl: false
 });
 
-Cylon.commands.echo = function(arg) {
+Cylon.MCP.commands.echo = function(arg) {
   if (arg == null) {
     throw new Error("No value passed to echo");
   }
