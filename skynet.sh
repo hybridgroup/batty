@@ -2,6 +2,8 @@
 OSPREY_INSTALL=${OSPREY_INSTALL:-"${HOME}"}
 . "${OSPREY_INSTALL}/osprey.sh"
 
+SKYNET_VERSION="0.0.1"
+
 DMR_BASE_URL=${MODEL_RUNNER_BASE_URL:-http://localhost:12434/engines/llama.cpp/v1}
 MODEL=${MODEL_RUNNER_TOOL_MODEL:-"ai/qwen2.5:latest"}
 TEMPERATURE=${MODEL_RUNNER_TEMPERATURE:-"0.0"}
@@ -13,13 +15,15 @@ fi
 
 clear
 
-echo "██████╗  █████╗ ████████╗████████╗██╗   ██╗";
-echo "██╔══██╗██╔══██╗╚══██╔══╝╚══██╔══╝╚██╗ ██╔╝";
-echo "██████╔╝███████║   ██║      ██║    ╚████╔╝ ";
-echo "██╔══██╗██╔══██║   ██║      ██║     ╚██╔╝  ";
-echo "██████╔╝██║  ██║   ██║      ██║      ██║   ";
-echo "╚═════╝ ╚═╝  ╚═╝   ╚═╝      ╚═╝      ╚═╝   ";
-echo "                                           ";
+echo "███████╗██╗  ██╗██╗   ██╗███╗   ██╗███████╗████████╗";
+echo "██╔════╝██║ ██╔╝╚██╗ ██╔╝████╗  ██║██╔════╝╚══██╔══╝";
+echo "███████╗█████╔╝  ╚████╔╝ ██╔██╗ ██║█████╗     ██║   ";
+echo "╚════██║██╔═██╗   ╚██╔╝  ██║╚██╗██║██╔══╝     ██║   ";
+echo "███████║██║  ██╗   ██║   ██║ ╚████║███████╗   ██║   ";
+echo "╚══════╝╚═╝  ╚═╝   ╚═╝   ╚═╝  ╚═══╝╚══════╝   ╚═╝   ";
+echo "                                                    ";
+
+echo "🔺 Skynet version $SKYNET_VERSION"
 
 read -r -d '' DEFAULT_SYSTEM_INSTRUCTION <<- EOM
 You are a robot.
@@ -30,7 +34,7 @@ EOM
 
 SYSTEM_INSTRUCTION=${SYSTEM_INSTRUCTION:-"${DEFAULT_SYSTEM_INSTRUCTION}"}
 
-echo "🧠 using model ${MODEL}"
+echo "🧠 loading model ${MODEL}"
 docker model pull ${MODEL}
 
 echo ""
@@ -103,7 +107,7 @@ EOM
         TOOL_CALLS=$(get_tool_calls "${RESULT}")
 
         if [[ -n "$TOOL_CALLS" ]]; then
-            echo "⏳ making robot request..."
+            echo "⏳ making request..."
             add_tool_calls_message CONVERSATION_HISTORY "${TOOL_CALLS}"
 
             for tool_call in $TOOL_CALLS; do
@@ -111,13 +115,13 @@ EOM
                 FUNCTION_ARGS=$(get_function_args "$tool_call")
                 CALL_ID=$(get_call_id "$tool_call")
 
-                echo "🛠️ calling robot function: $FUNCTION_NAME with args: $FUNCTION_ARGS"
+                echo "🛠️ calling function: $FUNCTION_NAME with args: $FUNCTION_ARGS"
 
                 # Execute function via MCP
                 MCP_RESPONSE=$(call_mcp_http_tool "$MCP_SERVER" "$FUNCTION_NAME" "$FUNCTION_ARGS")
                 RESULT_CONTENT=$(get_tool_content_http "$MCP_RESPONSE")
 
-                echo "✅ robot result: $RESULT_CONTENT"
+                echo "✅ result: $RESULT_CONTENT"
                 echo ""
 
                 TOOL_RESULT=$(echo "${RESULT_CONTENT}" | jq -r '.content')

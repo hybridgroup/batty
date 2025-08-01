@@ -1,20 +1,24 @@
-# Batty
+# Skynet
 
-Batty is a command line interface and [MCP host](https://modelcontextprotocol.io/docs/learn/architecture) to interact with LLMs to command real robots, drones, and other devices that provide an [MCP server](https://modelcontextprotocol.io/docs/learn/server-concepts) interface.
+## 🔺 What is Skynet
 
-Supports multiple step interactions for models that can perform such actions.
+Skynet is a minimal command line interface for Large Language Models to control real robots. 
 
-![MCP interactive](./images/batty-example.png)
+It provides an [MCP host](https://modelcontextprotocol.io/docs/learn/architecture) that calls [Docker Model Runner](https://www.docker.com/products/model-runner/) to control robots, drones, and other devices that provide an [MCP server](https://modelcontextprotocol.io/docs/learn/server-concepts) interface.
+
+Skynet supports multiple step interactions for models that can perform such actions such as [Qwen 2.5 Instruct](https://hub.docker.com/r/ai/qwen2.5).
+
+![MCP interactive](./images/skynet-example.png)
 
 Written using [Osprey](https://github.com/k33g/osprey) on [bash](https://en.wikipedia.org/wiki/Bash_(Unix_shell)).
 
-## How it works
+## 🔺 How Skynet works
 
 ### Architecture
 
 ```mermaid
 flowchart TD
-subgraph Batty
+subgraph Skynet
     A(["Chat interface"])
     A <---> C["Chat completions"]
     A <---> T["Tool calls"]
@@ -39,42 +43,42 @@ T <-- http --> R
 ```mermaid
 sequenceDiagram
         actor Human
-        actor Batty
+        actor Skynet
         actor Model
         actor MCP Server
         actor Robot
         loop entering commands
-            Human->>Batty: types command
-            Batty->>Model: enters command
-            Model->>Batty: response
+            Human->>Skynet: types command
+            Skynet->>Model: enters command
+            Model->>Skynet: response
             loop while tool calls needed
-                Batty->>MCP Server: call tools
+                Skynet->>MCP Server: call tools
                 MCP Server->>Robot: call API
                 Robot->>MCP Server: API result
-                MCP Server->>Batty: results from tools
-                Batty->>Model: add results from tools to message history
-                Model->>Batty: response
+                MCP Server->>Skynet: results from tools
+                Skynet->>Model: add results from tools to message history
+                Model->>Skynet: response
             end
             break no tool calls needed
-                Batty->>Human: display result
+                Skynet->>Human: display result
             end
         end
 ```
 
 
-## Using
+## 🔺 Using Skynet
 
-You must have any robot MCP servers already running in order to run Batty.
+You must have any robot MCP servers already running in order to run Skynet.
 
-Then just run the `batty.sh` command.
+Then just run the `skynet.sh` command.
 
 ### Additional command options
 
 Coming soon...
 
-## Installing
+## 🔺 Installing Skynet
 
-You can use Batty with the [Docker Model Runner](https://www.docker.com/products/model-runner/) with any model that supports instructions.
+You can use Skynet with the [Docker Model Runner](https://www.docker.com/products/model-runner/) with any model that supports instructions.
 
 [Qwen 2.5 Instruct](https://hub.docker.com/r/ai/qwen2.5) is known to work. Others may as well...
 
