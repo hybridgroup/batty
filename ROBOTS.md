@@ -6,7 +6,7 @@ These are some known MCP servers to robotic devices.
 
 ![MiP](https://github.com/hybridgroup/tinygo-mip/raw/main/images/mip.png)
 
-[MiP - WowWee MiP Robot](https://github.com/hybridgroup/tinygo-mip)
+[MiP - WowWee MiP Robot](https://github.com/hybridgroup/tinygo-mip/tree/main/cmd/mcp-mip)
 
 ## 🔺 Minidrone
 
