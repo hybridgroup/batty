@@ -8,6 +8,8 @@ DMR_BASE_URL=${MODEL_RUNNER_BASE_URL:-http://localhost:12434/engines/llama.cpp/v
 MODEL=${MODEL_RUNNER_TOOL_MODEL:-"ai/qwen2.5:latest"}
 TEMPERATURE=${MODEL_RUNNER_TEMPERATURE:-"0.0"}
 
+MCP_SERVER=${MCP_SERVER:-"http://localhost:9090"}
+
 DEBUG_MODE=false
 if [ "$1" = "-d" ] || [ "$1" = "--debug" ]; then
   DEBUG_MODE=true
@@ -39,8 +41,6 @@ docker model pull ${MODEL}
 
 echo ""
 
-MCP_SERVER=${MCP_SERVER:-"http://localhost:9090"}
-
 MCP_TOOLS=$(get_mcp_http_tools "$MCP_SERVER")
 TOOLS=$(transform_to_openai_format "$MCP_TOOLS")
 if [[ -z "$TOOLS" ]]; then
@@ -64,14 +64,16 @@ ASSISTANT_RESPONSE=""
 
 while true; do
   STOPPED="false"
-  USER_CONTENT=$(gum write --placeholder "🎤 What can I do for you?")
+  TOOLS_CALLED="false"
+  USER_CONTENT=$(gum write --placeholder "🎤 Skynet ready. Enter command (/bye to exit).")
   
   if [[ "$USER_CONTENT" == "/bye" ]]; then
     echo "Goodbye!"
     break
   fi
 
-  echo "🎤 ${USER_CONTENT}"
+  echo "💬 ${USER_CONTENT}"
+  echo ""
 
   # Add user message to conversation history
   add_user_message CONVERSATION_HISTORY "${USER_CONTENT}"
@@ -88,7 +90,7 @@ while true; do
   },
   "messages": [${MESSAGES}],
   "tools": ${TOOLS},
-  "parallel_tool_calls": true,
+  "parallel_tool_calls": false,
   "tool_choice": "auto"
 }
 EOM
@@ -103,11 +105,11 @@ EOM
     FINISH_REASON=$(get_finish_reason "${RESULT}")
     case $FINISH_REASON in
       tool_calls)
+        TOOLS_CALLED="true"
         # Get tool calls for further processing
         TOOL_CALLS=$(get_tool_calls "${RESULT}")
 
         if [[ -n "$TOOL_CALLS" ]]; then
-            echo "⏳ making request..."
             add_tool_calls_message CONVERSATION_HISTORY "${TOOL_CALLS}"
 
             for tool_call in $TOOL_CALLS; do
@@ -115,14 +117,13 @@ EOM
                 FUNCTION_ARGS=$(get_function_args "$tool_call")
                 CALL_ID=$(get_call_id "$tool_call")
 
-                echo "🛠️ calling function: $FUNCTION_NAME with args: $FUNCTION_ARGS"
+                echo "🛠️ calling tool '$FUNCTION_NAME' with $FUNCTION_ARGS"
 
                 # Execute function via MCP
                 MCP_RESPONSE=$(call_mcp_http_tool "$MCP_SERVER" "$FUNCTION_NAME" "$FUNCTION_ARGS")
                 RESULT_CONTENT=$(get_tool_content_http "$MCP_RESPONSE")
 
-                echo "✅ result: $RESULT_CONTENT"
-                echo ""
+                echo "✅ result $RESULT_CONTENT"
 
                 TOOL_RESULT=$(echo "${RESULT_CONTENT}" | jq -r '.content')
                 add_tool_message CONVERSATION_HISTORY "${CALL_ID}" "${TOOL_RESULT}"
@@ -137,6 +138,11 @@ EOM
       stop)
         STOPPED="true"
         ASSISTANT_MESSAGE=$(echo "${RESULT}" | jq -r '.choices[0].message.content')
+
+        if [[ "$TOOLS_CALLED" == "true" ]]; then
+          echo ""
+        fi
+
         echo "🤖 ${ASSISTANT_MESSAGE}"
 
         # Add assistant response to conversation history (from callback)
@@ -144,7 +150,7 @@ EOM
         ;;
 
       *)
-        echo "🔵 unexpected finish reason"
+        echo "🔴 unexpected model response: $FINISH_REASON"
         ;;
     esac
 

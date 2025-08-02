@@ -74,7 +74,35 @@ Then just run the `skynet.sh` command.
 
 ### Additional command options
 
-Coming soon...
+You can set the following environment variables to change Skynet.
+
+🔺 `DEBUG_MODE`
+
+Set debug mode. Defaults to `false`
+
+🔺 `MCP_SERVER`
+
+Set the MCP server to use. Defaults to `http://localhost:9090`
+
+🔺 `MODEL_RUNNER_BASE_URL`
+
+Set the URL to call Docker Model Runner.
+
+🔺 `MODEL_RUNNER_TOOL_MODEL`
+
+Set the model to use. Defaults to `ai/qwen2.5:latest`
+
+🔺 `MODEL_RUNNER_TEMPERATURE`
+
+Set the temperature for the model. Defaults to `0.0`
+
+🔺 `OSPREY_INSTALL`
+
+Set the directory in which to find Osprey. Defaults to your home directory.
+
+🔺 `SYSTEM_INSTRUCTION`
+
+Set the system instruction.
 
 ## 🔺 Installing Skynet
 
