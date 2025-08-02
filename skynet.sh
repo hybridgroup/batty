@@ -44,13 +44,35 @@ fi
 
 echo ""
 
-MCP_TOOLS=$(get_mcp_http_tools "$MCP_SERVER")
-if [[ -z "$MCP_TOOLS" ]]; then
+# Allow multiple MCP_SERVER addresses separated by comma
+MCP_SERVERS=${MCP_SERVER:-"http://localhost:9090"}
+IFS=',' read -ra SERVER_ARRAY <<< "$MCP_SERVERS"
+
+COMBINED_TOOLS="[]"
+
+# Build a map of function name to MCP server
+declare -A FUNCTION_SERVER_MAP
+for SERVER in "${SERVER_ARRAY[@]}"; do
+  TOOLS_JSON=$(get_mcp_http_tools "$SERVER")
+  if [[ -z "$TOOLS_JSON" || "$TOOLS_JSON" == "null" ]]; then
+    continue
+  fi
+
+  # For each tool, map its function name to the server
+  FUNCTION_NAMES=$(echo "$TOOLS_JSON" | jq -r '.[].name')
+  for fname in $FUNCTION_NAMES; do
+    FUNCTION_SERVER_MAP["$fname"]="$SERVER"
+  done
+  # Combine JSON arrays using jq
+  COMBINED_TOOLS=$(jq -s 'add' <(echo "$COMBINED_TOOLS") <(echo "$TOOLS_JSON"))
+done
+
+if [[ "$COMBINED_TOOLS" == "[]" ]]; then
     echo "🔴 no MCP servers. Exiting..."
     exit 1
 fi
 
-TOOLS=$(transform_to_openai_format "$MCP_TOOLS")
+TOOLS=$(transform_to_openai_format "$COMBINED_TOOLS")
 if [[ -z "$TOOLS" ]]; then
     echo "🔴 no MCP server tools found. Exiting..."
     exit 1
@@ -125,10 +147,16 @@ EOM
                 FUNCTION_ARGS=$(get_function_args "$tool_call")
                 CALL_ID=$(get_call_id "$tool_call")
 
-                echo "🛠️ calling tool '$FUNCTION_NAME' with $FUNCTION_ARGS"
+                # Find the correct MCP server for this function
+                SERVER_TO_USE="${FUNCTION_SERVER_MAP[$FUNCTION_NAME]}"
+                if [[ -z "$SERVER_TO_USE" ]]; then
+                  SERVER_TO_USE="$MCP_SERVER" # fallback
+                fi
+
+                echo "🛠️ calling tool '$FUNCTION_NAME' on $SERVER_TO_USE with $FUNCTION_ARGS"
 
                 # Execute function via MCP
-                MCP_RESPONSE=$(call_mcp_http_tool "$MCP_SERVER" "$FUNCTION_NAME" "$FUNCTION_ARGS")
+                MCP_RESPONSE=$(call_mcp_http_tool "$SERVER_TO_USE" "$FUNCTION_NAME" "$FUNCTION_ARGS")
                 RESULT_CONTENT=$(get_tool_content_http "$MCP_RESPONSE")
 
                 echo "✅ result $RESULT_CONTENT"
