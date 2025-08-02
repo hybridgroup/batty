@@ -2,7 +2,7 @@
 
 ## 🔺 What is Skynet
 
-Skynet is a minimal command line interface for Large Language Models to control real robots. 
+Skynet is a lightweight command line interface to Large Language Models for control of real robots using Bash.
 
 It provides an [MCP host](https://modelcontextprotocol.io/docs/learn/architecture) that calls [Docker Model Runner](https://www.docker.com/products/model-runner/) to control robots, drones, and other physical devices that provide an [MCP server](https://modelcontextprotocol.io/docs/learn/server-concepts) interface.  See [ROBOTS.md](ROBOTS.md) for a list of devices with MCP servers.
 
@@ -48,23 +48,23 @@ sequenceDiagram
         actor MCP Server
         actor Robot
         loop entering commands
-            Human->>Skynet: types command
-            Skynet->>Model: enters command
-            Model->>Skynet: response
+            Human->>Skynet: type command
+            Skynet->>Model: send message
+            Model->>Skynet: send response
             loop while tool calls needed
-                Skynet->>MCP Server: call tools
-                MCP Server->>Robot: call API
-                Robot->>MCP Server: API result
-                MCP Server->>Skynet: results from tools
-                Skynet->>Model: add results from tools to message history
-                Model->>Skynet: response
+                Skynet->>MCP Server: call tool
+                MCP Server-->>Robot: call device API
+                Robot-->>MCP Server: device API result
+                MCP Server->>Skynet: send results from tool
+                Skynet->>Skynet: add results to message history
+                Skynet->>Model: send updated message
+                Model->>Skynet: send response
             end
             break no tool calls needed
                 Skynet->>Human: display result
             end
         end
 ```
-
 
 ## 🔺 Using Skynet
 
