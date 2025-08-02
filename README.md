@@ -82,7 +82,7 @@ Set debug mode. Defaults to `false`
 
 🔺 `MCP_SERVER`
 
-Set the MCP server to use. Defaults to `http://localhost:9090`
+Set the MCP server to use. Allows multiple addresses separated by comma. Note that tool names must be unique per MCP server. Defaults to `http://localhost:9090`
 
 🔺 `MODEL_RUNNER_BASE_URL`
 
