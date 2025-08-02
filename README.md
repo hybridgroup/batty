@@ -10,9 +10,9 @@ Skynet supports multiple step interactions for models that can perform such acti
 
 ![MCP interactive](./images/skynet-example.png)
 
-Written using [Osprey](https://github.com/k33g/osprey) on [bash](https://en.wikipedia.org/wiki/Bash_(Unix_shell)).
-
 ## 🔺 How Skynet works
+
+Skynet is written in [bash](https://en.wikipedia.org/wiki/Bash_(Unix_shell)) using [Osprey](https://github.com/k33g/osprey).
 
 ### Architecture
 
@@ -68,7 +68,7 @@ sequenceDiagram
 
 ## 🔺 Using Skynet
 
-You must have any robot MCP servers already running in order to run Skynet.
+You must have any robot MCP servers already running in order to run Skynet. See [ROBOTS.md](ROBOTS.md) for a list of some known physical devices with MCP server interfaces.
 
 Then just run the `skynet.sh` command.
 
@@ -102,7 +102,14 @@ Set the directory in which to find Osprey. Defaults to your home directory.
 
 🔺 `SYSTEM_INSTRUCTION`
 
-Set the system instruction.
+Set the system instruction. Defaults to:
+
+```
+You are a robot.
+You have tools that actually call devices in the physical world that you are connected to.
+Use your tools to respond to human requests.
+Keep your responses short and to the point.
+```
 
 ## 🔺 Installing Skynet
 
@@ -110,9 +117,16 @@ You can use Skynet with the [Docker Model Runner](https://www.docker.com/product
 
 [Qwen 2.5 Instruct](https://hub.docker.com/r/ai/qwen2.5) is known to work. Others may as well...
 
-- jq - A lightweight and flexible command-line JSON processor.
-- awk - A domain-specific language designed for text processing.
-- curl - A command-line tool for transferring data with URLs.
-- bash - A Unix shell and command language.
-- gum - A tool for creating interactive command-line applications.
-- osprey - A lightweight Bash library for interacting with the DMR (Docker Model Runner) API.
+You also need to install the following:
+
+🔺 jq - A lightweight and flexible command-line JSON processor.
+
+🔺 awk - A domain-specific language designed for text processing.
+
+🔺 curl - A command-line tool for transferring data with URLs.
+
+🔺 bash - A Unix shell and command language.
+
+🔺 [gum](https://github.com/charmbracelet/gum) - A tool for creating interactive command-line applications.
+
+🔺 [osprey](https://github.com/k33g/osprey) - A lightweight Bash library for interacting with the DMR (Docker Model Runner) API.
