@@ -88,6 +88,10 @@ Set the MCP server to use. Defaults to `http://localhost:9090`
 
 Set the URL to call Docker Model Runner.
 
+🔺 `MODEL_RUNNER_PULL`
+
+Should Docker Model Runner pull the latest model? Defaults to `true`
+
 🔺 `MODEL_RUNNER_TOOL_MODEL`
 
 Set the model to use. Defaults to `ai/qwen2.5:latest`

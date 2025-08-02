@@ -7,6 +7,16 @@ SKYNET_VERSION="0.0.1"
 DMR_BASE_URL=${MODEL_RUNNER_BASE_URL:-http://localhost:12434/engines/llama.cpp/v1}
 MODEL=${MODEL_RUNNER_TOOL_MODEL:-"ai/qwen2.5:latest"}
 TEMPERATURE=${MODEL_RUNNER_TEMPERATURE:-"0.0"}
+MODEL_RUNNER_PULL=${MODEL_RUNNER_PULL:-"true"}
+
+read -r -d '' DEFAULT_SYSTEM_INSTRUCTION <<- EOM
+You are a robot.
+You have tools that actually call devices in the physical world that you are connected to.
+Use your tools to respond to human requests.
+Keep your responses short and to the point.
+EOM
+
+SYSTEM_INSTRUCTION=${SYSTEM_INSTRUCTION:-"${DEFAULT_SYSTEM_INSTRUCTION}"}
 
 MCP_SERVER=${MCP_SERVER:-"http://localhost:9090"}
 
@@ -26,18 +36,11 @@ echo "╚══════╝╚═╝  ╚═╝   ╚═╝   ╚═╝  ╚�
 echo "                                                    ";
 
 echo "🔺 Skynet version $SKYNET_VERSION"
-
-read -r -d '' DEFAULT_SYSTEM_INSTRUCTION <<- EOM
-You are a robot.
-You have tools that actually call devices in the physical world that you are connected to.
-Use your tools to respond to human requests.
-Keep your responses short and to the point.
-EOM
-
-SYSTEM_INSTRUCTION=${SYSTEM_INSTRUCTION:-"${DEFAULT_SYSTEM_INSTRUCTION}"}
-
 echo "🧠 loading model ${MODEL}"
-docker model pull ${MODEL}
+
+if [[ "$MODEL_RUNNER_PULL" == "true" ]]; then
+  docker model pull ${MODEL}
+fi
 
 echo ""
 
