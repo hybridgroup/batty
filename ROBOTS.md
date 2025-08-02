@@ -12,5 +12,5 @@ These are some known MCP servers to robotic devices.
 
 ![Minidrone](https://github.com/hybridgroup/tinygo-minidrone/raw/main/images/minidrone.jpg)
 
-[Minidrone - Parrot Minidrone](https://github.com/hybridgroup/tinygo-minidrone)
+[Minidrone - Parrot Minidrone](https://github.com/hybridgroup/tinygo-minidrone/tree/main/cmd/mcp-minidrone)
 

@@ -4,7 +4,7 @@
 
 Skynet is a minimal command line interface for Large Language Models to control real robots. 
 
-It provides an [MCP host](https://modelcontextprotocol.io/docs/learn/architecture) that calls [Docker Model Runner](https://www.docker.com/products/model-runner/) to control robots, drones, and other devices that provide an [MCP server](https://modelcontextprotocol.io/docs/learn/server-concepts) interface.
+It provides an [MCP host](https://modelcontextprotocol.io/docs/learn/architecture) that calls [Docker Model Runner](https://www.docker.com/products/model-runner/) to control robots, drones, and other physical devices that provide an [MCP server](https://modelcontextprotocol.io/docs/learn/server-concepts) interface.  See [ROBOTS.md](ROBOTS.md) for a list of devices with MCP servers.
 
 Skynet supports multiple step interactions for models such as [Qwen 2.5 Instruct](https://hub.docker.com/r/ai/qwen2.5). See [MODELS.md](MODELS.md) for a list of models that are known to support multistep actions.
 
