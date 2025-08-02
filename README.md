@@ -6,7 +6,7 @@ Skynet is a minimal command line interface for Large Language Models to control 
 
 It provides an [MCP host](https://modelcontextprotocol.io/docs/learn/architecture) that calls [Docker Model Runner](https://www.docker.com/products/model-runner/) to control robots, drones, and other devices that provide an [MCP server](https://modelcontextprotocol.io/docs/learn/server-concepts) interface.
 
-Skynet supports multiple step interactions for models that can perform such actions such as [Qwen 2.5 Instruct](https://hub.docker.com/r/ai/qwen2.5).
+Skynet supports multiple step interactions for models such as [Qwen 2.5 Instruct](https://hub.docker.com/r/ai/qwen2.5). See [MODELS.md](MODELS.md) for a list of models that are known to support multistep actions.
 
 ![MCP interactive](./images/skynet-example.png)
 
@@ -115,7 +115,7 @@ Keep your responses short and to the point.
 
 You can use Skynet with the [Docker Model Runner](https://www.docker.com/products/model-runner/) with any model that supports instructions.
 
-[Qwen 2.5 Instruct](https://hub.docker.com/r/ai/qwen2.5) is known to work. Others may as well...
+See [MODELS.md](MODELS.md) for a list of models that are known to support multistep actions.
 
 You also need to install the following:
 
