@@ -161,7 +161,8 @@ EOM
 
                 echo "✅ result $RESULT_CONTENT"
 
-                TOOL_RESULT=$(echo "${RESULT_CONTENT}" | jq -r '.content')
+                # If .content exists, use it; otherwise, use the whole RESULT_CONTENT
+                TOOL_RESULT=$(echo "${RESULT_CONTENT}" | jq -e '.content' >/dev/null 2>&1 && echo "${RESULT_CONTENT}" | jq -r '.content' || echo "${RESULT_CONTENT}")
                 add_tool_message CONVERSATION_HISTORY "${CALL_ID}" "${TOOL_RESULT}"
             done
         else
