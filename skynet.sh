@@ -42,9 +42,14 @@ docker model pull ${MODEL}
 echo ""
 
 MCP_TOOLS=$(get_mcp_http_tools "$MCP_SERVER")
+if [[ -z "$MCP_TOOLS" ]]; then
+    echo "🔴 no MCP servers. Exiting..."
+    exit 1
+fi
+
 TOOLS=$(transform_to_openai_format "$MCP_TOOLS")
 if [[ -z "$TOOLS" ]]; then
-    echo "🔵 no MCP server tools found. Exiting..."
+    echo "🔴 no MCP server tools found. Exiting..."
     exit 1
 fi
 
